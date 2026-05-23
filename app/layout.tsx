@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-instrument-serif",
+  style: ["normal", "italic"],
 });
 
 const siteTitle = "FOFENSOFT — Web & Mobile Software Development";
@@ -35,8 +42,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} scroll-smooth`}>
-      <body className="min-h-screen bg-slate-950 font-sans text-slate-100 antialiased">
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${instrumentSerif.variable} scroll-smooth`}
+    >
+      <body className="min-h-screen font-sans antialiased">
+        <div className="grain-overlay" aria-hidden />
         {children}
       </body>
     </html>

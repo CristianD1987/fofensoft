@@ -1,27 +1,18 @@
-import {
-  Code2,
-  Globe,
-  Mail,
-  MapPin,
-  Phone,
-  Smartphone,
-} from "lucide-react";
-
 const services = [
   {
-    icon: Globe,
+    number: "01",
     title: "Web Applications",
     description:
       "Modern, performant web apps built with Next.js, React, and TypeScript. From landing pages to complex SaaS platforms.",
   },
   {
-    icon: Smartphone,
+    number: "02",
     title: "Mobile Applications",
     description:
       "Native iOS and Android applications, as well as cross-platform solutions. We publish and maintain apps on the App Store and Google Play.",
   },
   {
-    icon: Code2,
+    number: "03",
     title: "Product Engineering",
     description:
       "End-to-end product development: architecture, design, implementation, and ongoing support for digital products at any stage.",
@@ -31,22 +22,31 @@ const services = [
 export default function Home() {
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-cream-border bg-cream/90 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 lg:px-8">
           <a
             href="#hero"
-            className="bg-gradient-to-r from-blue-500 to-violet-500 bg-clip-text text-lg font-bold tracking-tight text-transparent"
+            className="font-serif text-lg tracking-tight text-ink transition-colors hover:text-accent-warm"
           >
             FOFENSOFT
           </a>
-          <nav className="hidden gap-8 text-sm text-slate-400 sm:flex">
-            <a href="#about" className="transition-colors hover:text-white">
+          <nav className="hidden gap-10 text-sm text-ink-secondary sm:flex">
+            <a
+              href="#about"
+              className="transition-colors hover:text-ink"
+            >
               About
             </a>
-            <a href="#services" className="transition-colors hover:text-white">
+            <a
+              href="#services"
+              className="transition-colors hover:text-ink"
+            >
               Services
             </a>
-            <a href="#contact" className="transition-colors hover:text-white">
+            <a
+              href="#contact"
+              className="transition-colors hover:text-ink"
+            >
               Contact
             </a>
           </nav>
@@ -57,46 +57,42 @@ export default function Home() {
         {/* Hero */}
         <section
           id="hero"
-          className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-24 pb-20"
+          className="flex min-h-[90vh] flex-col items-center justify-center px-6 pt-28 pb-32 lg:px-8 lg:py-40"
         >
-          <div
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-500/10 via-slate-950 to-slate-950"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute top-1/4 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-violet-500/5 blur-3xl"
-            aria-hidden
-          />
-
-          <div className="relative z-10 mx-auto max-w-4xl text-center">
-            <p className="animate-fade-in-up mb-4 text-sm font-medium tracking-widest text-slate-400 uppercase">
-              Romanian software studio
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="animate-fade-in-up eyebrow">
+              Est. 2022 — Bucharest, Romania
             </p>
-            <h1 className="animate-fade-in-up animation-delay-150 bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-5xl font-bold tracking-tight text-transparent sm:text-7xl md:text-8xl">
+            <h1 className="animate-fade-in-up animation-delay-150 font-serif mt-8 text-[clamp(3.5rem,12vw,8rem)] leading-[0.95] tracking-tight text-ink">
               FOFENSOFT
             </h1>
-            <p className="animate-fade-in-up animation-delay-300 mt-6 text-xl text-slate-100 sm:text-2xl">
+            <p className="animate-fade-in-up animation-delay-300 font-serif mt-8 text-2xl italic text-ink sm:text-3xl lg:text-4xl">
               Building modern web and mobile applications
             </p>
-            <p className="animate-fade-in-up animation-delay-450 mx-auto mt-4 max-w-xl text-base text-slate-400 sm:text-lg">
-              Romanian software studio crafting digital products
+            <p className="animate-fade-in-up animation-delay-450 mx-auto mt-6 max-w-lg text-base leading-relaxed text-ink-secondary sm:text-lg">
+              A Romanian software studio crafting digital products with care.
             </p>
             <a
               href="#contact"
-              className="animate-fade-in-up animation-delay-450 mt-10 inline-flex items-center rounded-full bg-gradient-to-r from-blue-500 to-violet-500 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:shadow-blue-500/30"
+              className="animate-fade-in-up animation-delay-450 mt-12 inline-flex items-center gap-2 bg-ink px-8 py-3.5 text-sm font-medium tracking-wide text-cream transition-colors hover:bg-accent-warm"
             >
               Get in touch
+              <span aria-hidden>→</span>
             </a>
           </div>
         </section>
 
         {/* About */}
-        <section id="about" className="border-t border-slate-800 px-6 py-24">
-          <div className="mx-auto max-w-3xl">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              About us
+        <section
+          id="about"
+          className="border-t border-cream-border px-6 py-32 lg:px-8 lg:py-40"
+        >
+          <div className="mx-auto max-w-6xl">
+            <p className="eyebrow">About</p>
+            <h2 className="font-serif mt-4 max-w-2xl text-4xl leading-tight tracking-tight text-ink sm:text-5xl lg:text-6xl">
+              Software, thoughtfully made.
             </h2>
-            <div className="mt-8 space-y-6 text-lg leading-relaxed text-slate-400">
+            <div className="mt-16 grid gap-12 text-lg leading-relaxed text-ink-secondary md:grid-cols-2 md:gap-16 lg:gap-24">
               <p>
                 FOFENSOFT S.R.L. is a Romanian software development company
                 specializing in the design and development of modern web and
@@ -117,29 +113,27 @@ export default function Home() {
         {/* Services */}
         <section
           id="services"
-          className="border-t border-slate-800 bg-black/40 px-6 py-24"
+          className="border-t border-cream-border px-6 py-32 lg:px-8 lg:py-40"
         >
           <div className="mx-auto max-w-6xl">
-            <h2 className="text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <p className="eyebrow">What we do</p>
+            <h2 className="font-serif mt-4 text-4xl tracking-tight text-ink sm:text-5xl">
               Services
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-slate-400">
-              End-to-end capabilities for web, mobile, and product engineering.
-            </p>
 
-            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-20 grid gap-6 lg:grid-cols-3 lg:gap-8">
               {services.map((service) => (
                 <article
-                  key={service.title}
-                  className="group rounded-2xl border border-slate-800 bg-slate-950/50 p-8 transition-all duration-300 hover:border-slate-700 hover:bg-slate-900/50 hover:shadow-lg hover:shadow-blue-500/5"
+                  key={service.number}
+                  className="group flex flex-col border border-cream-border bg-cream p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-colors duration-300 hover:border-accent-warm/40 lg:p-10"
                 >
-                  <div className="mb-5 inline-flex rounded-xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 p-3 text-blue-400 transition-colors group-hover:from-blue-500/30 group-hover:to-violet-500/30">
-                    <service.icon className="h-6 w-6" aria-hidden />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white">
+                  <span className="font-serif text-5xl leading-none text-ink-muted transition-colors group-hover:text-accent-warm">
+                    {service.number}
+                  </span>
+                  <h3 className="mt-8 font-serif text-2xl text-ink">
                     {service.title}
                   </h3>
-                  <p className="mt-3 leading-relaxed text-slate-400">
+                  <p className="mt-4 flex-1 leading-relaxed text-ink-secondary">
                     {service.description}
                   </p>
                 </article>
@@ -149,81 +143,57 @@ export default function Home() {
         </section>
 
         {/* Contact */}
-        <section id="contact" className="border-t border-slate-800 px-6 py-24">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Get in touch
+        <section
+          id="contact"
+          className="border-t border-cream-border px-6 py-32 lg:px-8 lg:py-40"
+        >
+          <div className="mx-auto max-w-3xl">
+            <p className="eyebrow">Get in touch</p>
+            <h2 className="font-serif mt-4 text-4xl tracking-tight text-ink sm:text-5xl lg:text-6xl">
+              Let&apos;s build something.
             </h2>
-            <p className="mt-4 text-lg text-slate-400">
+            <p className="mt-6 text-lg text-ink-secondary">
               Have a project in mind? We&apos;d love to hear about it.
             </p>
 
-            <div className="mt-12 rounded-2xl border border-slate-800 bg-slate-900/30 p-8 text-left sm:p-10">
-              <ul className="space-y-6">
-                <li className="flex items-start gap-4">
-                  <Mail
-                    className="mt-0.5 h-5 w-5 shrink-0 text-blue-400"
-                    aria-hidden
-                  />
-                  <div>
-                    <p className="text-sm font-medium text-slate-500">Email</p>
-                    <a
-                      href="mailto:contact@fofensoft.com"
-                      className="mt-1 block text-slate-100 transition-colors hover:text-blue-400"
-                    >
-                      contact@fofensoft.com
-                    </a>
-                  </div>
-                </li>
-                <li className="flex items-start gap-4">
-                  <Phone
-                    className="mt-0.5 h-5 w-5 shrink-0 text-blue-400"
-                    aria-hidden
-                  />
-                  <div>
-                    <p className="text-sm font-medium text-slate-500">Phone</p>
-                    <a
-                      href="tel:+40756431273"
-                      className="mt-1 block text-slate-100 transition-colors hover:text-blue-400"
-                    >
-                      +40 756 431 273
-                    </a>
-                  </div>
-                </li>
-                <li className="flex items-start gap-4">
-                  <MapPin
-                    className="mt-0.5 h-5 w-5 shrink-0 text-blue-400"
-                    aria-hidden
-                  />
-                  <div>
-                    <p className="text-sm font-medium text-slate-500">
-                      Address
-                    </p>
-                    <p className="mt-1 leading-relaxed text-slate-100">
-                      Sos. Bucuresti Nord Nr. 10B, Tronson Corp A2, Sc. B, Et.
-                      7, Ap. 204, Voluntari, Ilfov, Romania
-                    </p>
-                  </div>
-                </li>
-              </ul>
+            <div className="mt-16 border border-cream-border bg-cream-dark">
+              <div className="border-b border-cream-border px-8 py-7 lg:px-10 lg:py-8">
+                <p className="eyebrow text-[0.625rem]">Email</p>
+                <a
+                  href="mailto:contact@fofensoft.com"
+                  className="mt-2 inline-block text-lg text-ink transition-colors hover:text-accent-warm hover:underline hover:underline-offset-4"
+                >
+                  contact@fofensoft.com
+                </a>
+              </div>
+              <div className="border-b border-cream-border px-8 py-7 lg:px-10 lg:py-8">
+                <p className="eyebrow text-[0.625rem]">Phone</p>
+                <a
+                  href="tel:+40756431273"
+                  className="mt-2 inline-block text-lg text-ink transition-colors hover:text-accent-warm hover:underline hover:underline-offset-4"
+                >
+                  +40 756 431 273
+                </a>
+              </div>
+              <div className="px-8 py-7 lg:px-10 lg:py-8">
+                <p className="eyebrow text-[0.625rem]">Address</p>
+                <p className="mt-2 text-lg leading-relaxed text-ink-secondary">
+                  Sos. Bucuresti Nord Nr. 10B, Tronson Corp A2, Sc. B, Et. 7,
+                  Ap. 204, Voluntari, Ilfov, Romania
+                </p>
+              </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-slate-800 px-6 py-10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-          <p className="text-sm text-slate-400">
-            © 2026 FOFENSOFT S.R.L. All rights reserved.
+      <footer className="border-t border-cream-border bg-cream-dark px-6 py-8 lg:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 FOFENSOFT S.R.L.</p>
+          <p className="sm:text-right">
+            CUI RO47274231 · J23/8314/2022 · Sos. Bucuresti Nord Nr. 10B,
+            Voluntari, Ilfov, Romania
           </p>
-          <div className="text-right text-sm text-slate-500">
-            <p className="font-medium text-slate-400">FOFENSOFT S.R.L.</p>
-            <p className="mt-1">CUI: [PLACEHOLDER_CUI]</p>
-            <p>Reg. Com.: [PLACEHOLDER_J]</p>
-            <p className="mt-1 max-w-xs sm:ml-auto">
-              Sos. Bucuresti Nord Nr. 10B, Voluntari, Ilfov, Romania
-            </p>
-          </div>
         </div>
       </footer>
     </>
