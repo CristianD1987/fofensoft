@@ -1,8 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { useSearchParams } from "next/navigation";
-import { CircleAlert, CircleCheck, Clock } from "lucide-react";
+import { CircleAlert, CircleCheck, Clock, LoaderCircle } from "lucide-react";
 
 // Only these Supabase projects may ever be called from this page.
 const ALLOWED_REFS = new Set([
@@ -15,14 +21,13 @@ const DEFAULT_REF = "rmtejutpgyrpronihhmv";
 // authority on whether a token is real.
 const TOKEN_PATTERN = /^[A-Za-z0-9_-]{1,200}={0,2}$/;
 
-type Status =
-  | "idle"
-  | "loading"
+type ResultStatus =
   | "verified"
   | "already_verified"
   | "expired"
   | "invalid"
   | "error";
+type Status = "loading" | ResultStatus;
 
 const COLORS = {
   card: "#0A3440",
@@ -32,29 +37,15 @@ const COLORS = {
   muted: "#8FC3D4",
 };
 
-const INFO_ROWS: { label: string; text: string }[] = [
-  {
-    label: "What we collect",
-    text: "The nickname your child picks in the House (not their real name), their age range and figure for their avatar, and their quests, rewards and activity.",
-  },
-  {
-    label: "Photo",
-    text: "Optional. If you approve one on your own phone, it's used once to create their avatar and is never saved. Without a photo, they get a general avatar.",
-  },
-  {
-    label: "Your child's account",
-    text: "Your child doesn't create an account. Their app connects to your House.",
-  },
-  {
-    label: "How we use it",
-    text: "Only to run House Elf for your family. No ads, no tracking, never sold.",
-  },
-];
-
-const RESULT_COPY: Record<
-  "verified" | "already_verified" | "expired" | "invalid" | "error",
-  { title: string; text: string; icon: "check" | "clock" | "alert" }
+const COPY: Record<
+  Status,
+  { title: string; text: string; icon: "spinner" | "check" | "clock" | "alert" }
 > = {
+  loading: {
+    title: "Confirming…",
+    text: "This takes a second.",
+    icon: "spinner",
+  },
   verified: {
     title: "You're verified",
     text: "Return to House Elf to invite your child. You'll also get a confirmation email.",
@@ -82,6 +73,25 @@ const RESULT_COPY: Record<
   },
 };
 
+const APP_URL = "houseelf://profile/child-consent";
+
+// Which result states link back to the app, and how prominently.
+const APP_LINK: Partial<Record<Status, "primary" | "secondary">> = {
+  verified: "primary",
+  already_verified: "primary",
+  expired: "secondary",
+  invalid: "secondary",
+};
+
+function isMobileDevice() {
+  const ua = navigator.userAgent;
+  if (/Android|iPhone|iPad|iPod/i.test(ua)) return true;
+  // iPadOS Safari reports a Mac user agent; touch support gives it away.
+  return /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+}
+
+const noopSubscribe = () => () => {};
+
 function resolveLink(params: URLSearchParams | null) {
   const token = params?.get("token") ?? "";
   const rawRef = params?.get("ref");
@@ -90,7 +100,8 @@ function resolveLink(params: URLSearchParams | null) {
   return { token, ref };
 }
 
-function statusFromResponse(httpStatus: number, body: unknown): Status {
+function statusFromResponse(httpStatus: number, body: unknown): ResultStatus {
+  if (httpStatus >= 500) return "error";
   const s =
     body && typeof body === "object" && "status" in body
       ? (body as { status: unknown }).status
@@ -110,30 +121,32 @@ function statusFromResponse(httpStatus: number, body: unknown): Status {
 
 export default function VerifyCard() {
   const params = useSearchParams();
+  const token = params?.get("token") ?? null;
+  const ref = params?.get("ref") ?? null;
   const link = resolveLink(params);
 
-  const [status, setStatus] = useState<Status>(link ? "idle" : "invalid");
+  const [status, setStatus] = useState<Status>(link ? "loading" : "invalid");
   const inFlight = useRef(false);
+  // Key of the link already auto-submitted; survives StrictMode's double effect.
+  const autoSubmitted = useRef<string | null>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const isMobile = useSyncExternalStore(
+    noopSubscribe,
+    isMobileDevice,
+    () => false,
+  );
 
-  // Move focus to the result title so keyboard / screen reader users land on it.
-  useEffect(() => {
-    if (status !== "idle" && status !== "loading" && link) {
-      titleRef.current?.focus();
-    }
-  }, [status, link]);
-
-  async function confirm() {
-    if (!link || inFlight.current) return;
+  const submit = useCallback(async (l: { token: string; ref: string }) => {
+    if (inFlight.current) return;
     inFlight.current = true;
     setStatus("loading");
     try {
       const res = await fetch(
-        `https://${link.ref}.supabase.co/functions/v1/parental-verification`,
+        `https://${l.ref}.supabase.co/functions/v1/parental-verification`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "verify", token: link.token }),
+          body: JSON.stringify({ action: "verify", token: l.token }),
           credentials: "omit",
           cache: "no-store",
           referrerPolicy: "no-referrer",
@@ -145,141 +158,107 @@ export default function VerifyCard() {
       } catch {
         body = null;
       }
-      setStatus(res.status >= 500 ? "error" : statusFromResponse(res.status, body));
+      setStatus(statusFromResponse(res.status, body));
     } catch {
       setStatus("error");
     } finally {
       inFlight.current = false;
     }
-  }
+  }, []);
 
-  const isResult = status !== "idle" && status !== "loading";
+  // Verify once on load.
+  useEffect(() => {
+    const l = resolveLink(new URLSearchParams({ token: token ?? "", ref: ref ?? "" }));
+    if (!l) return;
+    const key = `${l.ref}:${l.token}`;
+    if (autoSubmitted.current === key) return;
+    autoSubmitted.current = key;
+    void submit(l);
+  }, [token, ref, submit]);
+
+  // Move focus to the result title so keyboard / screen reader users land on it.
+  useEffect(() => {
+    if (status !== "loading") titleRef.current?.focus();
+  }, [status]);
+
+  const copy = COPY[status];
+  const Icon =
+    copy.icon === "spinner"
+      ? LoaderCircle
+      : copy.icon === "check"
+        ? CircleCheck
+        : copy.icon === "clock"
+          ? Clock
+          : CircleAlert;
 
   return (
     <section
       className="rounded-3xl border px-5 py-7 sm:px-7"
       style={{ background: COLORS.card, borderColor: COLORS.border }}
     >
-      <div aria-live="polite" aria-atomic="true">
-        {isResult ? <ResultView status={status} titleRef={titleRef} /> : null}
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        aria-busy={status === "loading"}
+        className="flex flex-col items-center py-4 text-center"
+      >
+        <Icon
+          aria-hidden
+          size={56}
+          strokeWidth={2}
+          color={COLORS.gold}
+          className={
+            copy.icon === "spinner"
+              ? "mb-5 animate-spin motion-reduce:animate-none"
+              : "mb-5"
+          }
+        />
+        <h1
+          ref={titleRef}
+          tabIndex={-1}
+          className="text-[1.75rem] leading-tight font-extrabold"
+          style={{ color: COLORS.text }}
+        >
+          {copy.title}
+        </h1>
+        <p
+          className="mt-3 text-base leading-relaxed"
+          style={{ color: COLORS.muted }}
+        >
+          {copy.text}
+        </p>
       </div>
 
-      {isResult && status === "error" ? (
-        <button type="button" className="he-btn mt-8" onClick={confirm}>
+      {APP_LINK[status] && !isMobile ? (
+        <p
+          className="mt-4 text-center text-base leading-relaxed"
+          style={{ color: COLORS.text }}
+        >
+          Open House Elf on your phone to continue.
+        </p>
+      ) : null}
+
+      {APP_LINK[status] === "primary" && isMobile ? (
+        <a href={APP_URL} className="he-btn mt-6 no-underline">
+          Back to House Elf
+        </a>
+      ) : null}
+
+      {APP_LINK[status] === "secondary" && isMobile ? (
+        <a href={APP_URL} className="he-link mt-4">
+          Open House Elf
+        </a>
+      ) : null}
+
+      {status === "error" && link ? (
+        <button
+          type="button"
+          className="he-btn mt-8"
+          onClick={() => void submit(link)}
+        >
           Try again
         </button>
       ) : null}
-
-      {!isResult ? (
-        <DefaultView loading={status === "loading"} onConfirm={confirm} />
-      ) : null}
     </section>
-  );
-}
-
-function ResultView({
-  status,
-  titleRef,
-}: {
-  status: keyof typeof RESULT_COPY;
-  titleRef: React.RefObject<HTMLHeadingElement | null>;
-}) {
-  const copy = RESULT_COPY[status];
-  const Icon =
-    copy.icon === "check" ? CircleCheck : copy.icon === "clock" ? Clock : CircleAlert;
-  return (
-    <div className="flex flex-col items-center py-4 text-center">
-      <Icon
-        aria-hidden
-        size={56}
-        strokeWidth={2}
-        color={COLORS.gold}
-        className="mb-5"
-      />
-      <h1
-        ref={titleRef}
-        tabIndex={-1}
-        className="text-[1.75rem] leading-tight font-extrabold"
-        style={{ color: COLORS.text }}
-      >
-        {copy.title}
-      </h1>
-      <p className="mt-3 text-base leading-relaxed" style={{ color: COLORS.muted }}>
-        {copy.text}
-      </p>
-    </div>
-  );
-}
-
-function DefaultView({
-  loading,
-  onConfirm,
-}: {
-  loading: boolean;
-  onConfirm: () => void;
-}) {
-  return (
-    <div>
-      <p
-        className="text-xs font-extrabold tracking-[0.16em]"
-        style={{ color: COLORS.gold }}
-      >
-        PARENT CONFIRMATION
-      </p>
-      <h1
-        className="mt-3 text-[1.75rem] leading-tight font-extrabold"
-        style={{ color: COLORS.text }}
-      >
-        Confirm you&apos;re a parent or guardian
-      </h1>
-      <p className="mt-4 text-base leading-relaxed" style={{ color: COLORS.text }}>
-        Someone is inviting a child to join their House on House Elf. Because
-        House Elf is used by children, we ask a parent or legal guardian to
-        confirm first.
-      </p>
-
-      <dl
-        className="mt-6 divide-y rounded-2xl border"
-        style={{ borderColor: COLORS.border, background: "#021C24" }}
-      >
-        {INFO_ROWS.map((row) => (
-          <div
-            key={row.label}
-            className="px-4 py-4"
-            style={{ borderColor: COLORS.border }}
-          >
-            <dt className="text-sm font-extrabold" style={{ color: COLORS.text }}>
-              {row.label}
-            </dt>
-            <dd
-              className="mt-1 text-[0.9375rem] leading-relaxed"
-              style={{ color: COLORS.muted }}
-            >
-              {row.text}
-            </dd>
-          </div>
-        ))}
-      </dl>
-
-      <p className="mt-7 text-[0.9375rem] leading-relaxed" style={{ color: COLORS.text }}>
-        By confirming, you agree that you&apos;re 18 or older and a parent or
-        legal guardian of the children you invite, and you consent to the
-        collection and use described above.
-      </p>
-
-      <button
-        type="button"
-        className="he-btn mt-5"
-        onClick={onConfirm}
-        disabled={loading}
-        aria-disabled={loading}
-      >
-        {loading ? "Confirming…" : "Yes, I'm a parent or guardian"}
-      </button>
-
-      <p className="mt-4 text-center text-sm leading-relaxed" style={{ color: COLORS.muted }}>
-        If this wasn&apos;t you, close this page. No child will be invited.
-      </p>
-    </div>
   );
 }

@@ -59,6 +59,14 @@ export default function HouseElfVerifyPage() {
         .he-btn:active:not(:disabled) { transform: scale(0.99); }
         .he-btn:disabled { opacity: 0.75; cursor: progress; }
         .he-btn:focus-visible { outline-offset: 4px; border-radius: 16px; }
+        .he-page a.he-btn { color: #03262F; text-decoration: none; }
+        .he-page a.he-link {
+          display: flex; align-items: center; justify-content: center;
+          min-height: 48px; padding: 8px 16px;
+          color: #F0C46A; font-weight: 800; font-size: 1.0625rem;
+          text-decoration: underline; text-underline-offset: 4px;
+          -webkit-tap-highlight-color: transparent;
+        }
       `}</style>
 
       <div className="mx-auto flex min-h-[100dvh] w-full max-w-[480px] flex-col px-4 pt-8 pb-10">
