@@ -23,8 +23,8 @@ export const viewport: Viewport = {
   themeColor: "#021C24",
 };
 
-const privacyPolicyUrl =
-  "https://app.termly.io/policy-viewer/policy.html?policyUUID=be76427f-7bd1-43db-bd56-da0e4f348642";
+const privacyPolicyUrl = "https://www.fofensoft.com/house-elf/privacy";
+const termsOfUseUrl = "https://www.fofensoft.com/house-elf/terms";
 
 export default function HouseElfVerifyPage() {
   return (
@@ -93,6 +93,10 @@ export default function HouseElfVerifyPage() {
           <a href="mailto:office@fofensoft.com">office@fofensoft.com</a> ·{" "}
           <a href={privacyPolicyUrl} target="_blank" rel="noopener noreferrer">
             Privacy Policy
+          </a>{" "}
+          ·{" "}
+          <a href={termsOfUseUrl} target="_blank" rel="noopener noreferrer">
+            Terms of Use
           </a>
         </footer>
       </div>

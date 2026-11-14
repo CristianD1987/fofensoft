@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    // permanent: true → 308
+    return [
+      { source: "/house-elf/privacy-policy", destination: "/house-elf/privacy", permanent: true },
+      { source: "/house-elf/terms-of-use", destination: "/house-elf/terms", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
