@@ -150,10 +150,13 @@ function makeComponents(aliasesById: Record<string, string[]>): Components {
 export function LegalDocument({
   source,
   aliases = {},
+  strictAliases = true,
 }: {
   source: string;
   /** Extra anchor ids per section number, e.g. { 13: ["children"] }. */
   aliases?: Record<number, string[]>;
+  /** Fail the build if an alias's section is missing (off for archived texts). */
+  strictAliases?: boolean;
 }) {
   // Resolve section-number aliases to heading ids using the same slugging.
   const aliasesById: Record<string, string[]> = {};
@@ -164,7 +167,7 @@ export function LegalDocument({
     if (n !== null && aliases[n]) aliasesById[slugify(m[1])] = aliases[n];
   }
   for (const [n, ids] of Object.entries(aliases)) {
-    if (!Object.values(aliasesById).includes(ids)) {
+    if (strictAliases && !Object.values(aliasesById).includes(ids)) {
       throw new Error(`Alias ${ids.join(", ")} points to missing section ${n}`);
     }
   }

@@ -1,4 +1,5 @@
 import { Nunito } from "next/font/google";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 // Self-hosted at build time by next/font: no request to Google at runtime.
@@ -71,6 +72,15 @@ const styles = `
   .he-prose ul.he-toc { list-style: none; padding-left: 0; }
   .he-prose ul.he-toc li { margin-top: 0; padding-left: 0; }
   .he-prose ul.he-toc a { display: block; padding: 0.5rem 0; line-height: 1.4; }
+  .he-archive-note {
+    margin-bottom: 1.75rem; padding: 0.875rem 1rem;
+    border: 1px solid var(--he-border); border-left: 4px solid var(--he-gold); border-radius: 10px;
+    color: var(--he-text); font-weight: 600; line-height: 1.5;
+  }
+  .he-versions { margin-top: 2.75rem; padding-top: 2rem; border-top: 1px solid var(--he-border); line-height: 1.7; }
+  .he-versions h2 { color: var(--he-text); font-size: 1.1875rem; font-weight: 800; scroll-margin-top: 1.25rem; }
+  .he-versions ul { margin-top: 0.5rem; }
+  .he-versions a { display: inline-block; padding: 0.375rem 0; }
   @media (min-width: 640px) {
     .he-prose { font-size: 1.125rem; }
     .he-prose .he-h1 { font-size: 2.25rem; }
@@ -99,8 +109,8 @@ export function HouseElfLegalChrome({ children }: { children: ReactNode }) {
         >
           House Elf is an app by FOFENSOFT S.R.L. ·{" "}
           <a href="mailto:office@fofensoft.com">office@fofensoft.com</a> ·{" "}
-          <a href="/house-elf/privacy">Privacy Policy</a> ·{" "}
-          <a href="/house-elf/terms">Terms of Use</a>
+          <Link href="/house-elf/privacy">Privacy Policy</Link> ·{" "}
+          <Link href="/house-elf/terms">Terms of Use</Link>
         </footer>
       </div>
     </div>
