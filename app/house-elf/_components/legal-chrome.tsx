@@ -11,6 +11,7 @@ const nunito = Nunito({
 
 export const PRIVACY_URL = "https://www.fofensoft.com/house-elf/privacy";
 export const TERMS_URL = "https://www.fofensoft.com/house-elf/terms";
+export const SUPPORT_URL = "https://www.fofensoft.com/house-elf/support";
 
 // Same palette as /house-elf/verify (dark), plus a light counterpart.
 const styles = `
@@ -110,7 +111,8 @@ export function HouseElfLegalChrome({ children }: { children: ReactNode }) {
           House Elf is an app by FOFENSOFT S.R.L. ·{" "}
           <a href="mailto:office@fofensoft.com">office@fofensoft.com</a> ·{" "}
           <Link href="/house-elf/privacy">Privacy Policy</Link> ·{" "}
-          <Link href="/house-elf/terms">Terms of Use</Link>
+          <Link href="/house-elf/terms">Terms of Use</Link> ·{" "}
+          <Link href="/house-elf/support">Support</Link>
         </footer>
       </div>
     </div>

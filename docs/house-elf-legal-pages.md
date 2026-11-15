@@ -14,6 +14,7 @@ House Elf is a mobile app by FOFENSOFT S.R.L. Its legal texts are hosted here, n
 | `/house-elf/terms/<YYYY-MM-DD>` | Archived Terms of Use version (`noindex`) | [app/house-elf/terms/[version]/page.tsx](../app/house-elf/terms/%5Bversion%5D/page.tsx) |
 | `/house-elf/privacy-policy` | 308 → `/house-elf/privacy` | `redirects()` in [next.config.ts](../next.config.ts) |
 | `/house-elf/terms-of-use` | 308 → `/house-elf/terms` | `redirects()` in [next.config.ts](../next.config.ts) |
+| `https://www.fofensoft.com/house-elf/support` | Support page (static, indexable); linked from every House Elf footer | [app/house-elf/support/page.tsx](../app/house-elf/support/page.tsx) |
 | `/house-elf/verify` | Parental verification page; its footer links to the two current URLs above | [app/house-elf/verify/page.tsx](../app/house-elf/verify/page.tsx) |
 
 First published versions: `2026-11-14` for both documents.

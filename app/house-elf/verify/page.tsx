@@ -25,6 +25,7 @@ export const viewport: Viewport = {
 
 const privacyPolicyUrl = "https://www.fofensoft.com/house-elf/privacy";
 const termsOfUseUrl = "https://www.fofensoft.com/house-elf/terms";
+const supportUrl = "https://www.fofensoft.com/house-elf/support";
 
 export default function HouseElfVerifyPage() {
   return (
@@ -97,6 +98,10 @@ export default function HouseElfVerifyPage() {
           ·{" "}
           <a href={termsOfUseUrl} target="_blank" rel="noopener noreferrer">
             Terms of Use
+          </a>{" "}
+          ·{" "}
+          <a href={supportUrl} target="_blank" rel="noopener noreferrer">
+            Support
           </a>
         </footer>
       </div>
