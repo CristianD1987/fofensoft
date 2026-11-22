@@ -1,6 +1,6 @@
 # Black Box — Privacy Policy
 
-**Effective date:** November 21, 2026
+**Effective date:** November 22, 2026
 **Developer:** Fofensoft
 **Contact:** office@fofensoft.com
 
@@ -75,6 +75,30 @@ The ad partners process this data under their own privacy policies:
 - Unity: https://unity.com/legal/game-player-and-app-user-privacy-policy
 - LevelPlay (Unity): https://developers.is.com/ironsource-mobile/air/ironsource-mobile-privacy-policy/
 - Google AdMob: https://policies.google.com/privacy
+
+## Install attribution (AppsFlyer)
+
+To know which ads or websites bring new players, and to pay ad campaigns fairly, the game uses **AppsFlyer**,
+a mobile measurement service. When you install and open the game, AppsFlyer receives:
+
+- your device's advertising ID (on iPhone only if you allow tracking in Apple's prompt), an app-specific device
+  ID, the install referrer from the store;
+- device and app information (model, OS version, language, IP address and approximate location from it);
+- a few game events: finishing the first run, opening a new level, playing a Ranked run, linking Game Center /
+  Play Games, watching a rewarded video, and the revenue from the ads you see.
+
+AppsFlyer matches this with the ad you saw or clicked before installing, and reports it to us and, in summary,
+to the ad network that ran the campaign (for example Meta, TikTok or Unity). We do not sell it.
+
+- **In the European Economic Area, the United Kingdom and Switzerland** AppsFlyer starts only after your ad
+  choice. If you choose "non-personalized only", the install is still counted, but AppsFlyer and the ad
+  networks are told you did not consent and may use it only in aggregate, not to personalize ads.
+- **On iPhone** without tracking permission, campaigns are measured through Apple's SKAdNetwork, which does not
+  identify you.
+
+You can change your ad choice in **YOU → Ad privacy**, reset your advertising ID in your phone's settings, or ask
+AppsFlyer directly to stop measuring you or to delete your data by writing to privacy@appsflyer.com.
+AppsFlyer's policy: https://www.appsflyer.com/legal/services-privacy-policy/
 
 ## Children
 
